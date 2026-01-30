@@ -339,12 +339,13 @@
       var s = document.getElementById('saiyara');
       if (!s) return;
       s.addEventListener('error', function() {
-        window.open('https://open.spotify.com/search/saiyara', '_blank');
+        var w = window.open('https://open.spotify.com/search/saiyara', 'spotify', 'width=420,height=700,scrollbars=yes,resizable=yes');
         var notice = document.getElementById('songNotice');
         if (notice) {
           var text = notice.querySelector('.song-notice-text');
-          if (text) text.textContent = "Couldn't load the song here — opened Spotify instead. Click Yes when you're ready 😏";
+          if (text) text.textContent = "Saiyara is playing in the other window — you're back here. Tap the song in Spotify, then click Yes when you're ready 😏";
         }
+        setTimeout(function() { window.focus(); }, 2500);
       });
     })();
     var noMessages = [
