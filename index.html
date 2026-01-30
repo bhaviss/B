@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open this 👀</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: #1a0a2e;
+      background-image: 
+        radial-gradient(ellipse at 20% 20%, #2d1b4e 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, #16213e 0%, transparent 50%),
+        linear-gradient(180deg, #1a0a2e 0%, #0f0620 100%);
+      font-family: 'Comic Neue', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+
+    .screen {
+      display: none;
+      max-width: 460px;
+      width: 100%;
+      animation: fadeIn 0.5s ease-out;
+    }
+    .screen.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .intro { text-align: center; }
+    .intro .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff6ec7, #e94ba8);
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .intro h1 {
+      font-family: 'Bangers', cursive;
+      color: #00f5d4;
+      font-size: 1.85rem;
+      letter-spacing: 2px;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 20px rgba(0, 245, 212, 0.5);
+    }
+    .intro .hook {
+      color: #a78bfa;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .intro .btn-start {
+      font-family: 'Bangers', cursive;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+      padding: 0.9rem 2.5rem;
+      background: linear-gradient(180deg, #00f5d4, #00bb9a);
+      color: #0f0620;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #008f75, 0 8px 25px rgba(0, 245, 212, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .intro .btn-start:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 0 #008f75, 0 12px 25px rgba(0, 245, 212, 0.5);
+    }
+
+    .letter-wrapper { perspective: 1000px; }
+    .letter {
+      background: linear-gradient(160deg, #fef9e7 0%, #f5e6c8 50%, #ede0c8 100%);
+      border-radius: 0.5rem;
+      padding: 1.75rem 1.5rem;
+      box-shadow: 0 0 0 3px #8b7355, 0 8px 0 #6b5344, 0 15px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
+      border: 1px solid #c4a574;
+      position: relative;
+    }
+    .letter::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, transparent, #d4a574, transparent);
+      border-radius: 0.5rem 0.5rem 0 0;
+    }
+    .letter .stamp {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      font-size: 1.5rem;
+      opacity: 0.9;
+    }
+    .letter .greeting {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: #5c4033;
+      margin-bottom: 0.75rem;
+    }
+    .letter .question-text {
+      font-family: 'Comic Neue', cursive;
+      color: #3d2914;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+      font-weight: 700;
+    }
+    .letter .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      justify-content: center;
+    }
+    .letter .opt {
+      font-family: 'Bangers', cursive;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      padding: 0.6rem 1.1rem;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      background: linear-gradient(180deg, #00f5d4, #00bb9a);
+      color: #0f0620;
+      box-shadow: 0 3px 0 #008f75;
+    }
+    .letter .opt:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 0 #008f75;
+    }
+    .letter .opt.no-btn {
+      background: linear-gradient(180deg, #ff6ec7, #e94ba8);
+      color: white;
+      box-shadow: 0 3px 0 #b91c7a;
+      position: relative;
+      transition: transform 0.2s, left 0.2s, top 0.2s;
+    }
+    .letter .opt.no-btn:hover { box-shadow: 0 5px 0 #b91c7a; }
+    .letter .opt.no-btn.shrink { animation: shrinkWobble 0.5s ease-out forwards; }
+    .letter .opt.no-btn.tiny {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.6rem;
+      opacity: 0.9;
+    }
+    @keyframes shrinkWobble {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(-4deg); }
+      50% { transform: rotate(3deg); }
+      75% { transform: rotate(-2deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .no-msg {
+      margin-top: 0.85rem;
+      padding: 0.5rem;
+      background: rgba(255, 110, 199, 0.2);
+      border-radius: 0.4rem;
+      border-left: 4px solid #ff6ec7;
+      color: #3d2914;
+      font-size: 0.95rem;
+      font-weight: 700;
+      min-height: 2.5rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .no-msg.show {
+      opacity: 1;
+      animation: popIn 0.35s ease-out;
+    }
+    .no-count { font-size: 0.8rem; color: #8b7355; margin-top: 0.35rem; }
+    @keyframes popIn {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .card-success {
+      margin-top: 1rem;
+      padding: 0.9rem;
+      background: rgba(0, 245, 212, 0.25);
+      border: 2px solid #00bb9a;
+      border-radius: 0.5rem;
+      color: #0f0620;
+      font-weight: 700;
+      display: none;
+    }
+    .card-success.show { display: block; animation: popIn 0.4s ease-out; }
+
+    .screen.exit { animation: slideOut 0.4s ease-in forwards; }
+    .screen.enter { animation: slideIn 0.5s ease-out; }
+    @keyframes slideOut {
+      from { opacity: 1; transform: translateX(0) scale(1); }
+      to { opacity: 0; transform: translateX(-80px) scale(0.95); }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(80px) scale(0.95); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
+    .results-box {
+      background: linear-gradient(160deg, #2d1b4e 0%, #1f1335 100%);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      border: 3px solid #00f5d4;
+      box-shadow: 0 0 30px rgba(0, 245, 212, 0.2);
+    }
+    .results-box.results-end {
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .results-box .results-ps {
+      font-size: 1.2rem;
+      color: #fef3c7;
+      font-weight: 700;
+      line-height: 1.5;
+      animation: bouncePop 1s ease-out;
+    }
+    @keyframes bouncePop {
+      0% { opacity: 0; transform: scale(0.3); }
+      50% { transform: scale(1.2); }
+      65% { transform: scale(0.9); }
+      80% { transform: scale(1.05); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    #poppers-container {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .popper {
+      position: absolute;
+      font-size: 1.5rem;
+      animation: popperFly 1.2s ease-out forwards;
+    }
+    @keyframes popperFly {
+      0% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+      100% { opacity: 0; transform: var(--popper-end); }
+    }
+    .song-notice {
+      display: none;
+      margin-top: 0.85rem;
+      padding: 0.65rem 1rem;
+      background: linear-gradient(135deg, #ff6ec7, #e94ba8);
+      color: white;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: center;
+      animation: popOut 0.5s ease-out;
+      box-shadow: 0 4px 15px rgba(255, 110, 199, 0.4);
+    }
+    .song-notice.show { display: block; }
+    .song-notice-emoji { display: block; font-size: 1.4rem; margin-bottom: 0.2rem; }
+    @keyframes popOut {
+      0% { opacity: 0; transform: scale(0.8); }
+      70% { transform: scale(1.1); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="screen active" id="intro">
+    <div class="intro">
+      <span class="badge">For you 💌</span>
+      <h1>Open this when you can</h1>
+      <p class="hook">Two little questions — answer and see what happens.</p>
+      <button class="btn-start" id="btnStart">Open my letter 👀</button>
+    </div>
+  </div>
+
+  <div class="screen" id="card1">
+    <div class="letter-wrapper">
+      <div class="letter">
+        <span class="stamp">📮</span>
+        <p class="greeting">Dear Deepu,</p>
+        <p class="question-text">When are we hanging out? (Pick one.)</p>
+        <div class="options">
+          <button class="opt" data-q="1" data-choice="Yes">Yes</button>
+          <button class="opt no-btn" data-q="1" data-choice="No">No</button>
+        </div>
+        <p class="no-msg" data-msg="1"></p>
+        <p class="no-count" data-count="1"></p>
+        <div class="song-notice" id="songNotice">
+          <span class="song-notice-emoji">🎵</span>
+          <span class="song-notice-text">Saiyara opened in a new tab. Play it there, then switch back here and click Yes when you're ready 😏</span>
+        </div>
+        <p class="card-success" data-success="1"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="card2">
+    <div class="letter-wrapper">
+      <div class="letter">
+        <span class="stamp">🦊🐰</span>
+        <p class="greeting">P.S.</p>
+        <p class="question-text">Will you watch Zootopia with me? (Judy & Nick are waiting.)</p>
+        <div class="options">
+          <button class="opt" data-q="2" data-choice="Yes">Yes</button>
+          <button class="opt no-btn" data-q="2" data-choice="No">No</button>
+        </div>
+        <p class="no-msg" data-msg="2"></p>
+        <p class="no-count" data-count="2"></p>
+        <p class="card-success" data-success="2"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="results">
+    <div id="poppers-container"></div>
+    <div class="results-box results-end">
+      <p class="results-ps">That's it! 🎉 Just a fun little task — hope it made you smile! 😊✨</p>
+    </div>
+  </div>
+
+  <script>
+    var noMessages = [
+      "Ye option nahi hai yaar 😏",
+      "404 — Bahana not found.",
+      "Beta, galat button dabaya.",
+      "Council ne reject kar diya.",
+      "Kya choice hai re!",
+      "Mummy ko bata dungi. Aur group chat ko bhi.",
+      "Expectations 📉",
+      "Yaar, seriously?",
+      "The audacity. The AUDACITY.",
+      "Yes wala dabao na!",
+      "Magic 8 ball se better decision hota.",
+      "Noted. List mein add ho gaya.",
+      "Chalo, group chat pe bhej rahi hoon.",
+      "Screenshots bhi hain. Just saying.",
+      "Ab Yes dabao, bas.",
+      "Invalid. Sirf Yes hai option.",
+      "Nahi? Wendy's thodi hai ye.",
+      "Error 404: Excuse not found.",
+      "Ye sab WhatsApp pe ja raha hai.",
+      "So you've chosen violence. Interesting.",
+      "Yes button ro raha hai. Dekh kya kiya.",
+      "Main wait karungi. Time hai. Aur screenshots bhi.",
+      "Denied. Better attitude ke sath try karo.",
+      "Room awkward ho gaya. Tum ho reason.",
+      "Congratulations, chaos choose kiya.",
+      "Phir se try karo. With feeling.",
+      "That button ab witness protection mein hai.",
+      "Council ko pata chal jayega.",
+      "Yahan ye nahi chalta.",
+      "Invalid answer. 'Yes' dabao.",
+    ];
+    var results = { q1: null, q2: null };
+    var SAIYARA_SPOTIFY = 'https://open.spotify.com/search/saiyara';
+
+    function showScreen(id, transition) {
+      document.querySelectorAll('.screen').forEach(function(s) {
+        s.classList.remove('active', 'exit', 'enter');
+      });
+      var next = document.getElementById(id);
+      if (transition && document.querySelector('.screen.active')) {
+        var prev = document.querySelector('.screen.active');
+        prev.classList.add('exit');
+        setTimeout(function() {
+          prev.classList.remove('active', 'exit');
+          next.classList.add('active', 'enter');
+          setTimeout(function() { next.classList.remove('enter'); }, 500);
+        }, 400);
+      } else {
+        next.classList.add('active');
+      }
+    }
+
+    document.getElementById('btnStart').onclick = function() {
+      showScreen('card1', true);
+    };
+
+    function handleOption(btn, q) {
+      var choice = btn.dataset.choice;
+      var isNo = btn.classList.contains('no-btn');
+      var block = btn.closest('.letter');
+      var successEl = block.querySelector('[data-success="' + q + '"]');
+      var opts = block.querySelectorAll('.opt:not(.no-btn)');
+
+      if (isNo) {
+        var noBtn = btn;
+        var msgEl = block.querySelector('[data-msg="' + q + '"]');
+        var countEl = block.querySelector('[data-count="' + q + '"]');
+        if (!noBtn.noClicks) noBtn.noClicks = 0;
+        noBtn.noClicks++;
+        if (!noBtn.currentScale) noBtn.currentScale = 1;
+        var nextScale = Math.max(0.2, noBtn.currentScale * 0.82);
+        noBtn.currentScale = nextScale;
+
+        noBtn.style.transition = 'transform 0.4s ease-out';
+        noBtn.style.transform = 'scale(' + nextScale + ')';
+        noBtn.classList.add('shrink');
+        setTimeout(function() {
+          noBtn.classList.remove('shrink');
+          noBtn.classList.add('tiny');
+          noBtn.style.transform = 'scale(' + nextScale + ')';
+          if (noBtn.noClicks >= 3) {
+            var wrapper = block.querySelector('.options');
+            var rect = wrapper.getBoundingClientRect();
+            var maxX = Math.min(rect.width - 80, 120);
+            var maxY = 60;
+            noBtn.style.position = 'relative';
+            noBtn.style.left = (Math.random() * maxX * 2 - maxX) + 'px';
+            noBtn.style.top = (Math.random() * maxY * 2 - maxY) + 'px';
+          }
+        }, 500);
+
+        msgEl.textContent = noMessages[(noBtn.noClicks - 1) % noMessages.length];
+        msgEl.classList.add('show');
+        countEl.textContent = noBtn.noClicks === 1 ? "That's 1 no. I'm keeping count." : "That's " + noBtn.noClicks + " nos. The guilt is real.";
+        countEl.style.display = 'block';
+
+        if (q === '1') {
+          window.open(SAIYARA_SPOTIFY, '_blank');
+          document.getElementById('songNotice').classList.add('show');
+        }
+
+        if (!results['q' + q]) results['q' + q] = { choice: 'No', noClicks: noBtn.noClicks };
+        else results['q' + q].noClicks = noBtn.noClicks;
+        return;
+      }
+
+      opts.forEach(function(o) { o.style.display = 'none'; });
+      block.querySelector('.no-btn').style.display = 'none';
+      block.querySelector('.no-msg').classList.remove('show');
+      block.querySelector('[data-count="' + q + '"]').style.display = 'none';
+      successEl.textContent = "Nice. I'm holding you to it. 📝";
+      successEl.classList.add('show');
+      results['q' + q] = { choice: choice, noClicks: 0 };
+
+      if (q === '1') {
+        document.getElementById('songNotice').classList.remove('show');
+        setTimeout(function() { showScreen('card2', true); }, 1200);
+      } else {
+        setTimeout(function() {
+          showScreen('results', true);
+          firePoppers();
+        }, 1200);
+      }
+    }
+
+    function firePoppers() {
+      var container = document.getElementById('poppers-container');
+      if (!container) return;
+      var emojis = ['🎉', '✨', '🎊', '😊', '💫', '🌟', '💖', '⭐', '🎈', '🌸'];
+      var cx = window.innerWidth / 2;
+      var cy = window.innerHeight / 2;
+      for (var i = 0; i < 35; i++) {
+        var p = document.createElement('span');
+        p.className = 'popper';
+        p.textContent = emojis[i % emojis.length];
+        p.style.left = cx + 'px';
+        p.style.top = cy + 'px';
+        var angle = (i / 35) * 2 * Math.PI + Math.random();
+        var dist = 80 + Math.random() * 200;
+        var dx = Math.cos(angle) * dist;
+        var dy = Math.sin(angle) * dist;
+        p.style.setProperty('--popper-end', 'translate(' + dx + 'px, ' + dy + 'px) scale(0.5) rotate(720deg)');
+        container.appendChild(p);
+        setTimeout(function(el) { el.remove(); }, 1300, p);
+      }
+    }
+
+    document.querySelectorAll('.opt').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        handleOption(this, this.dataset.q);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+========================================
+  DEPLOY TO VERCEL (easy)
+========================================
+
+1. Go to: https://vercel.com
+2. Sign in (GitHub / Google / Email)
+3. Click "Add New..." → "Project"
+4. Drag the "take-me-out-page" FOLDER onto the page
+   (or: run in terminal from this folder:  npx vercel  )
+5. Click Deploy. You'll get a link like: https://take-me-out-xxx.vercel.app
+6. Send that link to Deepu — he opens it on his phone.
+
+========================================
+  OR DEPLOY TO NETLIFY
+========================================
+
+1. Go to: https://app.netlify.com/drop
+2. Drag the "take-me-out-page" FOLDER onto the page
+3. Copy the link they give you. Send it to Deepu.
+
+========================================
+  FLOW ON MOBILE
+========================================
+
+When Deepu clicks "No" on the 1st question:
+• Spotify opens in a NEW TAB (or Spotify app)
+• The letter page STAYS OPEN in the first tab
+• He taps Saiyara in Spotify to play
+• He switches back to the browser tab with your letter
+• He clicks "Yes" when he's ready → next question
+
+No need to close Spotify — just switch tabs and click Yes.
