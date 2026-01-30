@@ -299,7 +299,7 @@
         <p class="no-count" data-count="1"></p>
         <div class="song-notice" id="songNotice">
           <span class="song-notice-emoji">🎵</span>
-          <span class="song-notice-text">Saiyara opened in another tab. Come back to this page (switch tabs or use your browser back button), then click Yes below when you're ready 😏</span>
+          <span class="song-notice-text">Click Yes — or you're gonna listen to Saiyara until you click Yes 😏</span>
         </div>
         <p class="card-success" data-success="1"></p>
       </div>
@@ -329,6 +329,10 @@
       <p class="results-ps">That's it! 🎉 Just a fun little task — hope it made you smile! 😊✨</p>
     </div>
   </div>
+
+  <audio id="saiyara" preload="auto" loop>
+    <source src="saiyara.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     var noMessages = [
@@ -364,7 +368,6 @@
       "Invalid answer. Click Yes.",
     ];
     var results = { q1: null, q2: null };
-    var SAIYARA_SPOTIFY = 'https://open.spotify.com/search/saiyara';
 
     function showScreen(id, transition) {
       document.querySelectorAll('.screen').forEach(function(s) {
@@ -385,6 +388,8 @@
     }
 
     document.getElementById('btnStart').onclick = function() {
+      var s = document.getElementById('saiyara');
+      if (s) { s.play().then(function() { s.pause(); s.currentTime = 0; }).catch(function() {}); }
       showScreen('card1', true);
     };
 
@@ -429,7 +434,8 @@
         countEl.style.display = 'block';
 
         if (q === '1') {
-          window.open(SAIYARA_SPOTIFY, '_blank');
+          var saiyara = document.getElementById('saiyara');
+          if (saiyara) { saiyara.currentTime = 0; saiyara.play().catch(function() {}); }
           document.getElementById('songNotice').classList.add('show');
         }
 
@@ -447,6 +453,8 @@
       results['q' + q] = { choice: choice, noClicks: 0 };
 
       if (q === '1') {
+        var s = document.getElementById('saiyara');
+        if (s) s.pause();
         document.getElementById('songNotice').classList.remove('show');
         setTimeout(function() { showScreen('card2', true); }, 1200);
       } else {
