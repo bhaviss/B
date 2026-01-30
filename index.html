@@ -268,6 +268,20 @@
     }
     .song-notice.show { display: block; }
     .song-notice-emoji { display: block; font-size: 1.4rem; margin-bottom: 0.2rem; }
+    .youtube-wrap {
+      display: none;
+      margin-top: 1rem;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .youtube-wrap.show { display: block; }
+    .youtube-wrap iframe {
+      width: 100%;
+      max-width: 320px;
+      height: 180px;
+      border: none;
+    }
     @keyframes popOut {
       0% { opacity: 0; transform: scale(0.8); }
       70% { transform: scale(1.1); }
@@ -301,6 +315,9 @@
           <span class="song-notice-emoji">🎵</span>
           <span class="song-notice-text">Click Yes — or you're gonna listen to Saiyara until you click Yes 😏</span>
         </div>
+        <div class="youtube-wrap" id="youtubeWrap">
+          <iframe id="youtubeSaiyara" src="" title="Saiyara" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
         <p class="card-success" data-success="1"></p>
       </div>
     </div>
@@ -330,24 +347,8 @@
     </div>
   </div>
 
-  <audio id="saiyara" preload="auto" loop>
-    <source src="saiyara.mp3" type="audio/mpeg">
-  </audio>
-
   <script>
-    (function() {
-      var s = document.getElementById('saiyara');
-      if (!s) return;
-      s.addEventListener('error', function() {
-        var w = window.open('https://open.spotify.com/search/saiyara', 'spotify', 'width=420,height=700,scrollbars=yes,resizable=yes');
-        var notice = document.getElementById('songNotice');
-        if (notice) {
-          var text = notice.querySelector('.song-notice-text');
-          if (text) text.textContent = "Saiyara is playing in the other window — you're back here. Tap the song in Spotify, then click Yes when you're ready 😏";
-        }
-        setTimeout(function() { window.focus(); }, 2500);
-      });
-    })();
+    var SAIYARA_YOUTUBE = 'https://www.youtube.com/embed/BSJa1UytM8w?start=68&autoplay=1';
     var noMessages = [
       "That wasn't an option 😏",
       "404 — Excuse not found.",
@@ -447,11 +448,11 @@
         countEl.style.display = 'block';
 
         if (q === '1') {
-          var saiyara = document.getElementById('saiyara');
-          if (saiyara) {
-            saiyara.currentTime = 0;
-            var p = saiyara.play();
-            if (p && p.catch) p.catch(function() { saiyara.dispatchEvent(new Event('error')); });
+          var yt = document.getElementById('youtubeSaiyara');
+          var ytWrap = document.getElementById('youtubeWrap');
+          if (yt && ytWrap) {
+            yt.src = SAIYARA_YOUTUBE;
+            ytWrap.classList.add('show');
           }
           document.getElementById('songNotice').classList.add('show');
         }
@@ -470,8 +471,9 @@
       results['q' + q] = { choice: choice, noClicks: 0 };
 
       if (q === '1') {
-        var s = document.getElementById('saiyara');
-        if (s) s.pause();
+        var yt = document.getElementById('youtubeSaiyara');
+        var ytWrap = document.getElementById('youtubeWrap');
+        if (yt && ytWrap) { yt.src = ''; ytWrap.classList.remove('show'); }
         document.getElementById('songNotice').classList.remove('show');
         setTimeout(function() { showScreen('card2', true); }, 1200);
       } else {
