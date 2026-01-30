@@ -222,19 +222,33 @@
       position: relative;
       z-index: 2;
     }
+    .results-box .results-title {
+      font-size: 1.6rem;
+      color: #00f5d4;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      animation: funBounce 0.8s ease-out;
+    }
     .results-box .results-ps {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       color: #fef3c7;
       font-weight: 700;
       line-height: 1.5;
-      animation: bouncePop 1s ease-out;
+      animation: funBounce 0.8s ease-out 0.15s both;
     }
-    @keyframes bouncePop {
-      0% { opacity: 0; transform: scale(0.3); }
-      50% { transform: scale(1.2); }
-      65% { transform: scale(0.9); }
-      80% { transform: scale(1.05); }
-      100% { opacity: 1; transform: scale(1); }
+    .results-box .results-ps2 {
+      font-size: 1rem;
+      color: #a78bfa;
+      margin-top: 0.75rem;
+      font-style: italic;
+      animation: funBounce 0.8s ease-out 0.3s both;
+    }
+    @keyframes funBounce {
+      0% { opacity: 0; transform: scale(0.2) rotate(-8deg); }
+      40% { transform: scale(1.2) rotate(3deg); }
+      60% { transform: scale(0.95) rotate(-2deg); }
+      80% { transform: scale(1.05) rotate(1deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
     }
     #poppers-container {
       position: fixed;
@@ -245,42 +259,14 @@
     }
     .popper {
       position: absolute;
-      font-size: 1.5rem;
-      animation: popperFly 1.2s ease-out forwards;
+      font-size: 1.6rem;
+      animation: popperFly 1.4s ease-out forwards;
     }
+    .popper.delay { animation-delay: 0.1s; opacity: 0; }
+    .popper.delay2 { animation-delay: 0.2s; opacity: 0; }
     @keyframes popperFly {
       0% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
       100% { opacity: 0; transform: var(--popper-end); }
-    }
-    .song-notice {
-      display: none;
-      margin-top: 0.85rem;
-      padding: 0.65rem 1rem;
-      background: linear-gradient(135deg, #ff6ec7, #e94ba8);
-      color: white;
-      border-radius: 0.5rem;
-      font-size: 0.9rem;
-      font-weight: 700;
-      line-height: 1.35;
-      text-align: center;
-      animation: popOut 0.5s ease-out;
-      box-shadow: 0 4px 15px rgba(255, 110, 199, 0.4);
-    }
-    .song-notice.show { display: block; }
-    .song-notice-emoji { display: block; font-size: 1.4rem; margin-bottom: 0.2rem; }
-    .youtube-wrap {
-      display: none;
-      margin-top: 1rem;
-      border-radius: 0.5rem;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    .youtube-wrap.show { display: block; }
-    .youtube-wrap iframe {
-      width: 100%;
-      max-width: 320px;
-      height: 180px;
-      border: none;
     }
     @keyframes popOut {
       0% { opacity: 0; transform: scale(0.8); }
@@ -311,13 +297,6 @@
         </div>
         <p class="no-msg" data-msg="1"></p>
         <p class="no-count" data-count="1"></p>
-        <div class="song-notice" id="songNotice">
-          <span class="song-notice-emoji">🎵</span>
-          <span class="song-notice-text">Click Yes — or you're gonna listen to Saiyara until you click Yes 😏</span>
-        </div>
-        <div class="youtube-wrap" id="youtubeWrap">
-          <iframe id="youtubeSaiyara" src="" title="Saiyara" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
         <p class="card-success" data-success="1"></p>
       </div>
     </div>
@@ -343,12 +322,13 @@
   <div class="screen" id="results">
     <div id="poppers-container"></div>
     <div class="results-box results-end">
-      <p class="results-ps">That's it! 🎉 Just a fun little task — hope it made you smile! 😊✨</p>
+      <p class="results-title">You did it! 🎊</p>
+      <p class="results-ps">That's a wrap — just a fun little task. Hope it made you smile! 😊✨</p>
+      <p class="results-ps2">P.S. You're the best. Now go hang out & watch Zootopia. 🦊🐰</p>
     </div>
   </div>
 
   <script>
-    var SAIYARA_YOUTUBE = 'https://www.youtube.com/embed/BSJa1UytM8w?start=68&autoplay=1';
     var noMessages = [
       "That wasn't an option 😏",
       "404 — Excuse not found.",
@@ -402,8 +382,6 @@
     }
 
     document.getElementById('btnStart').onclick = function() {
-      var s = document.getElementById('saiyara');
-      if (s) { s.play().then(function() { s.pause(); s.currentTime = 0; }).catch(function() {}); }
       showScreen('card1', true);
     };
 
@@ -447,16 +425,6 @@
         countEl.textContent = noBtn.noClicks === 1 ? "That's 1 no. I'm keeping count." : "That's " + noBtn.noClicks + " nos. The guilt is real.";
         countEl.style.display = 'block';
 
-        if (q === '1') {
-          var yt = document.getElementById('youtubeSaiyara');
-          var ytWrap = document.getElementById('youtubeWrap');
-          if (yt && ytWrap) {
-            yt.src = SAIYARA_YOUTUBE;
-            ytWrap.classList.add('show');
-          }
-          document.getElementById('songNotice').classList.add('show');
-        }
-
         if (!results['q' + q]) results['q' + q] = { choice: 'No', noClicks: noBtn.noClicks };
         else results['q' + q].noClicks = noBtn.noClicks;
         return;
@@ -471,10 +439,6 @@
       results['q' + q] = { choice: choice, noClicks: 0 };
 
       if (q === '1') {
-        var yt = document.getElementById('youtubeSaiyara');
-        var ytWrap = document.getElementById('youtubeWrap');
-        if (yt && ytWrap) { yt.src = ''; ytWrap.classList.remove('show'); }
-        document.getElementById('songNotice').classList.remove('show');
         setTimeout(function() { showScreen('card2', true); }, 1200);
       } else {
         setTimeout(function() {
@@ -487,22 +451,22 @@
     function firePoppers() {
       var container = document.getElementById('poppers-container');
       if (!container) return;
-      var emojis = ['🎉', '✨', '🎊', '😊', '💫', '🌟', '💖', '⭐', '🎈', '🌸'];
+      var emojis = ['🎉', '✨', '🎊', '😊', '💫', '🌟', '💖', '⭐', '🎈', '🌸', '🦊', '🐰', '🍿', '💕', '🔥'];
       var cx = window.innerWidth / 2;
       var cy = window.innerHeight / 2;
-      for (var i = 0; i < 35; i++) {
+      for (var i = 0; i < 50; i++) {
         var p = document.createElement('span');
-        p.className = 'popper';
+        p.className = 'popper' + (i % 3 === 1 ? ' delay' : i % 3 === 2 ? ' delay2' : '');
         p.textContent = emojis[i % emojis.length];
         p.style.left = cx + 'px';
         p.style.top = cy + 'px';
-        var angle = (i / 35) * 2 * Math.PI + Math.random();
-        var dist = 80 + Math.random() * 200;
+        var angle = (i / 50) * 2 * Math.PI + Math.random();
+        var dist = 100 + Math.random() * 220;
         var dx = Math.cos(angle) * dist;
         var dy = Math.sin(angle) * dist;
-        p.style.setProperty('--popper-end', 'translate(' + dx + 'px, ' + dy + 'px) scale(0.5) rotate(720deg)');
+        p.style.setProperty('--popper-end', 'translate(' + dx + 'px, ' + dy + 'px) scale(0.4) rotate(720deg)');
         container.appendChild(p);
-        setTimeout(function(el) { el.remove(); }, 1300, p);
+        setTimeout(function(el) { el.remove(); }, 1500, p);
       }
     }
 
