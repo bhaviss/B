@@ -335,6 +335,18 @@
   </audio>
 
   <script>
+    (function() {
+      var s = document.getElementById('saiyara');
+      if (!s) return;
+      s.addEventListener('error', function() {
+        window.open('https://open.spotify.com/search/saiyara', '_blank');
+        var notice = document.getElementById('songNotice');
+        if (notice) {
+          var text = notice.querySelector('.song-notice-text');
+          if (text) text.textContent = "Couldn't load the song here — opened Spotify instead. Click Yes when you're ready 😏";
+        }
+      });
+    })();
     var noMessages = [
       "That wasn't an option 😏",
       "404 — Excuse not found.",
@@ -435,7 +447,11 @@
 
         if (q === '1') {
           var saiyara = document.getElementById('saiyara');
-          if (saiyara) { saiyara.currentTime = 0; saiyara.play().catch(function() {}); }
+          if (saiyara) {
+            saiyara.currentTime = 0;
+            var p = saiyara.play();
+            if (p && p.catch) p.catch(function() { saiyara.dispatchEvent(new Event('error')); });
+          }
           document.getElementById('songNotice').classList.add('show');
         }
 

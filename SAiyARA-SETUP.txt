@@ -1,0 +1,28 @@
+========================================
+  MAKE SAIYARA PLAY ON THE PAGE
+========================================
+
+The song didn't play because the audio file is not in the repo yet.
+
+TO FIX (so the song plays on the page):
+
+1. Get the Saiyara song as an MP3 file (from your music app, CD, or a source you're allowed to use).
+
+2. Rename the file to exactly:  saiyara.mp3
+
+3. Put saiyara.mp3 in THIS folder (same folder as index.html):
+   C:\Users\bhavi\Downloads\take-me-out-page\
+
+4. Push to GitHub:
+   Open PowerShell and run:
+
+   cd "C:\Users\bhavi\Downloads\take-me-out-page"
+   git add saiyara.mp3
+   git commit -m "Add Saiyara audio"
+   git push origin main
+
+5. Wait 1–2 minutes for GitHub Pages to update. Then open your page again — when you click No on the first question, the song will play on the page.
+
+========================================
+
+Until you add saiyara.mp3: when you click No, Spotify will open in a new tab so you can still listen to Saiyara there.
